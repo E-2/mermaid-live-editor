@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import Card from '$lib/components/card/card.svelte';
 	import { krokiRendererUrl, rendererUrl } from '$lib/util/env';
+	import { getStateString } from '$lib/util/state';
 	import { pakoSerde } from '$lib/util/serde';
 	import { stateStore } from '$lib/util/state';
 	import { logEvent } from '$lib/util/stats';
@@ -19,6 +20,8 @@
 		if (!svg) {
 			svg = getSvgEl();
 		}
+		const codeEl = document.createComment('\nBase64 encoded source:\n' + toBase64($stateStore.code) + '\n')
+		svg.prepend(codeEl);
 		const svgString = svg.outerHTML
 			.replaceAll('<br>', '<br/>')
 			.replaceAll(/<img([^>]*)>/g, (m, g: string) => `<img ${g} />`);
